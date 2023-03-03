@@ -1,5 +1,6 @@
-import Meta from '@/pages/components/Meta'
 import { FormEvent, useState } from 'react'
+import Meta from './components/Meta'
+import Spinner from '@/pages/components/Spinner'
 
 interface FormElements extends HTMLFormControlsCollection {
   endpoint: HTMLInputElement
@@ -9,20 +10,37 @@ interface CashbackFormElements extends HTMLFormElement {
   readonly elements: FormElements
 }
 
+const devApiURL = 'http://localhost:3200'
+const prodApiURL = 'https://cashpass-eacfbsrbvq-uc.a.run.app'
+
+const tableTitles = [
+  'Cashback',
+  'Travel Miles/Points',
+  'Credit Card Points',
+  'Misc. Reward Points',
+]
+
 const HomePage = () => {
-  const [data, setData] = useState<{ name: string; value: string }[]>()
+  const [data, setData] = useState<{ name: string; value: string }[][] | null>()
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async (e: FormEvent<CashbackFormElements>) => {
     e.preventDefault()
 
+    setData(null)
+    setIsLoading(true)
+
     const endpoint = e.currentTarget.elements.endpoint.value
 
-    const res = await fetch(
-      `http://localhost:3200/scraper?endpoint=${endpoint}`
-    )
+    const res = await fetch(`${devApiURL}/scraper?endpoint=${endpoint}`)
+
+    if (res.status !== 200) {
+      setIsLoading(false)
+    }
 
     const data = await res.json()
 
+    setIsLoading(false)
     setData(data)
   }
 
@@ -30,35 +48,55 @@ const HomePage = () => {
     <>
       <Meta />
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type={'text'}
-          name={'endpoint'}
-          placeholder={'Search'}
-          className={'bg-gray-300'}
-        />
+      <div className={'m-5'}>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <input
+              type={'text'}
+              name={'endpoint'}
+              placeholder={'Search'}
+              className={'bg-gray-200 p-2'}
+            />
 
-        <button type={'submit'} className={'bg-blue-600 text-white px-5'}>
-          Search
-        </button>
-      </form>
+            <button
+              type={'submit'}
+              className={'bg-blue-600 text-white py-2 px-3 hover:bg-blue-500'}
+              disabled={isLoading}
+            >
+              {isLoading ? <Spinner /> : <span>Submit</span>}
+            </button>
+          </div>
+        </form>
+      </div>
 
-      {data && (
-        <table>
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th>Value</th>
-            </tr>
-            {data.map((row) => (
-              <tr key={row.name}>
-                <td>{row.name}</td>
-                <td>{row.value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      {data &&
+        data.map((table, i) => (
+          <>
+            <h2>
+              <b>{tableTitles[i]}</b>
+            </h2>
+
+            <table
+              key={`table_${i}`}
+              className={
+                'table-fixed border-collapse border border-slate-500 m-5'
+              }
+            >
+              <tbody>
+                <tr>
+                  <th className={'border border-slate-600'}>Provider</th>
+                  <th className={'border border-slate-600'}>Rate</th>
+                </tr>
+                {table.map((row, j) => (
+                  <tr key={`table_${i}-row_${j}`}>
+                    <td className={'border border-slate-700'}>{row.name}</td>
+                    <td className={'border border-slate-700'}>{row.value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        ))}
     </>
   )
 }
