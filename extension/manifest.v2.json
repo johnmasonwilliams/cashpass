@@ -1,0 +1,10 @@
+{
+  "name": "CashPass: Find the Best Cash Back Credit Card - Compare and Save",
+  "description": "Want to earn more cash back on your credit card purchases? Look no further than CashPass.",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_title": "Find the Best Cash Back Credit Card - Compare and Save with CashPass",
+    "default_popup": "index.html"
+  }
+}

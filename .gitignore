@@ -1,0 +1,9 @@
+server/node_modules
+
+next-app/.next
+next-app/node_modules
+
+extension/next
+extension/index.html
+
+.idea
