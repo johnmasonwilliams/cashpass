@@ -2,11 +2,15 @@ const express = require("express");
 const puppeteer = require("puppeteer");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const compression = require("compression");
+const helmet = require("helmet");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+app.use(compression());
+app.use(helmet());
 
 const PORT = process.env.port || 3200;
 
