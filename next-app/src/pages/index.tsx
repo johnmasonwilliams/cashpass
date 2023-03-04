@@ -10,8 +10,13 @@ interface CashbackFormElements extends HTMLFormElement {
   readonly elements: FormElements
 }
 
-const devApiURL = 'http://localhost:3200'
-const prodApiURL = 'https://cashpass-eacfbsrbvq-uc.a.run.app'
+const overrideFlag = true
+
+const apiURL = overrideFlag
+  ? 'http://localhost:3200'
+  : process.env.NODE_ENV === 'production'
+  ? 'https://cashpass-eacfbsrbvq-uc.a.run.app'
+  : 'http://localhost:3200'
 
 const tableTitles = [
   'Cashback',
@@ -32,7 +37,7 @@ const HomePage = () => {
 
     const endpoint = e.currentTarget.elements.endpoint.value
 
-    const res = await fetch(`${devApiURL}/scraper?endpoint=${endpoint}`)
+    const res = await fetch(`${apiURL}/scraper?endpoint=${endpoint}`)
 
     if (res.status !== 200) {
       setIsLoading(false)
