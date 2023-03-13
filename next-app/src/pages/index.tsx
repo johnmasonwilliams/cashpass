@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import Meta from './components/Meta'
 import Spinner from '@/pages/components/Spinner'
 
@@ -73,13 +73,12 @@ const HomePage = () => {
 
       {data &&
         data.map((table, i) => (
-          <>
+          <React.Fragment key={`table_${i}`}>
             <h2>
               <b>{tableTitles[i]}</b>
             </h2>
 
             <table
-              key={`table_${i}`}
               className={
                 'table-fixed border-collapse border border-slate-500 m-5'
               }
@@ -97,7 +96,7 @@ const HomePage = () => {
                 ))}
               </tbody>
             </table>
-          </>
+          </React.Fragment>
         ))}
     </>
   )
