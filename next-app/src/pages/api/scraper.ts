@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer'
+import chromium from 'chrome-aws-lambda'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(
@@ -21,7 +21,7 @@ export default async function handler(
 async function scrapeSite(endpoint: string) {
   console.log(`Scraping ${endpoint}...`)
 
-  const browser = await puppeteer.launch({
+  const browser = await chromium.puppeteer.launch({
     headless: true,
     args: [
       '--disable-gpu',
