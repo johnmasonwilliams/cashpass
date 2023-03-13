@@ -13,10 +13,10 @@ interface CashbackFormElements extends HTMLFormElement {
 const overrideFlag = true
 
 const apiURL = overrideFlag
-  ? 'http://localhost:3200'
+  ? 'http://localhost:3000'
   : process.env.NODE_ENV === 'production'
-  ? 'https://cashpass-eacfbsrbvq-uc.a.run.app'
-  : 'http://localhost:3200'
+  ? 'https://cashpass.vercel.app'
+  : 'http://localhost:3000'
 
 const tableTitles = [
   'Cashback',
@@ -37,7 +37,7 @@ const HomePage = () => {
 
     const endpoint = e.currentTarget.elements.endpoint.value
 
-    const res = await fetch(`${apiURL}/scraper?endpoint=${endpoint}`)
+    const res = await fetch(`${apiURL}/api/scraper?endpoint=${endpoint}`)
 
     if (res.status !== 200) {
       setIsLoading(false)
