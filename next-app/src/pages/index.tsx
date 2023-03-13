@@ -10,13 +10,10 @@ interface CashbackFormElements extends HTMLFormElement {
   readonly elements: FormElements
 }
 
-const overrideFlag = true
-
-const apiURL = overrideFlag
-  ? 'http://localhost:3000'
-  : process.env.NODE_ENV === 'production'
-  ? 'https://cashpass.vercel.app'
-  : 'http://localhost:3000'
+const apiURL =
+  process.env.NODE_ENV === 'production'
+    ? 'https://cashpass.vercel.app'
+    : 'http://localhost:3000'
 
 const tableTitles = [
   'Cashback',
