@@ -1,13 +1,15 @@
 import chromium from 'chrome-aws-lambda'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-export default async function handler(req: any, res: any) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const endpoint = req.query.endpoint as string
 
   if (!endpoint) {
     return res.status(400).send('Needs an endpoint')
   }
-
-  console.log(endpoint)
 
   const data = await scrapeSite(endpoint)
 
